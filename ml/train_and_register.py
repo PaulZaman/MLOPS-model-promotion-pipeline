@@ -7,20 +7,22 @@ from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression 
 from sklearn.model_selection import train_test_split 
 from sklearn.metrics import accuracy_score 
- 
+import dagshub
+
 MODEL_NAME = os.getenv("MODEL_NAME", "churn-model") 
  
 def main(): 
-    tracking_uri = os.environ["MLFLOW_TRACKING_URI"] 
-    token = os.environ["MLFLOW_TRACKING_TOKEN"] 
-    mlflow.set_tracking_uri(tracking_uri) 
+    dagshub.init(repo_owner="PaulZaman", repo_name="model-pipeline-mlflow", mlflow=True)
+
+    tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
+    token = os.environ["MLFLOW_TRACKING_TOKEN"]
+
+    mlflow.set_tracking_uri(tracking_uri)
     os.environ["MLFLOW_TRACKING_USERNAME"] = token 
     os.environ["MLFLOW_TRACKING_PASSWORD"] = token 
  
-    X, y = make_classification(n_samples=2000, n_features=10, 
-random_state=42) 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, 
-test_size=0.2, random_state=42) 
+    X, y = make_classification(n_samples=2000, n_features=10, random_state=42) 
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) 
  
     model = LogisticRegression(max_iter=200) 
     model.fit(X_train, y_train) 
