@@ -7,13 +7,11 @@ from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression 
 from sklearn.model_selection import train_test_split 
 from sklearn.metrics import accuracy_score 
-import dagshub
+
 
 MODEL_NAME = os.getenv("MODEL_NAME", "churn-model") 
  
 def main(): 
-    dagshub.init(repo_owner="PaulZaman", repo_name="model-pipeline-mlflow", mlflow=True)
-
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     token = os.environ["MLFLOW_TRACKING_TOKEN"]
 
